@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Your Requirement – TechVenture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue-900:#0a1628; --blue-800:#0d2347; --blue-700:#0f3460;
+      --blue-600:#1a4a8a; --blue-500:#2563eb; --blue-400:#3b82f6;
+      --blue-300:#60a5fa; --accent:#38bdf8; --accent2:#06b6d4;
+      --white:#fff; --text-muted:#94a3b8;
+      --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1);
+      --success:#22c55e; --error:#ef4444;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:'DM Sans',sans-serif;
+      background:var(--blue-900); color:var(--white);
+      min-height:100vh; overflow-x:hidden;
+    }
+    body::before{
+      content:'';position:fixed;inset:0;
+      background:radial-gradient(ellipse 70% 50% at 15% 20%,rgba(37,99,235,0.15) 0%,transparent 60%),
+                 radial-gradient(ellipse 50% 40% at 85% 75%,rgba(6,182,212,0.1) 0%,transparent 55%);
+      pointer-events:none;z-index:0;
+    }
+
+    /* TOPBAR */
+    .topbar{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      display:flex;align-items:center;gap:1rem;
+      padding:1rem 1.5rem;
+      background:rgba(10,22,40,0.9);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--glass-border);
+    }
+    .back-btn{
+      display:flex;align-items:center;gap:0.4rem;
+      color:var(--text-muted);text-decoration:none;font-size:0.9rem;
+      background:var(--glass);border:1px solid var(--glass-border);
+      padding:0.4rem 0.9rem;border-radius:8px;transition:all 0.2s;
+    }
+    .back-btn:hover{color:var(--white);border-color:rgba(255,255,255,0.25);}
+    .topbar-title{
+      font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;
+      background:linear-gradient(90deg,var(--blue-300),var(--accent));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    #nav-user{display:flex;align-items:center;gap:0.5rem;margin-left:auto;}
+    #nav-user img{width:28px;height:28px;border-radius:50%;}
+    #nav-user span{font-size:0.82rem;color:var(--text-muted);}
+
+    /* PAGE */
+    .page{
+      position:relative;z-index:1;
+      max-width:680px;margin:0 auto;
+      padding:6rem 1.25rem 3rem;
+    }
+    .page-header{text-align:center;margin-bottom:2.5rem;}
+    .page-badge{
+      display:inline-block;background:rgba(37,99,235,0.15);
+      border:1px solid rgba(37,99,235,0.3);color:var(--blue-300);
+      padding:0.35rem 1rem;border-radius:99px;font-size:0.78rem;
+      font-weight:600;letter-spacing:0.05em;margin-bottom:1rem;
+    }
+    .page-header h1{
+      font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.2rem);
+      font-weight:800;margin-bottom:0.6rem;
+    }
+    .page-header h1 em{
+      font-style:normal;
+      background:linear-gradient(90deg,var(--blue-300),var(--accent));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .page-header p{color:var(--text-muted);font-size:0.95rem;line-height:1.6;}
+
+    /* FORM CARD */
+    .form-card{
+      background:var(--glass);border:1px solid var(--glass-border);
+      border-radius:20px;padding:2rem;
+    }
+
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .form-group{display:flex;flex-direction:column;gap:0.45rem;margin-bottom:1rem;}
+    .form-group label{
+      font-size:0.85rem;font-weight:600;color:var(--blue-300);letter-spacing:0.02em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea{
+      background:rgba(255,255,255,0.06);
+      border:1px solid var(--glass-border);
+      border-radius:10px;padding:0.8rem 1rem;
+      color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.9rem;
+      transition:border-color 0.2s,background 0.2s;
+      outline:none;width:100%;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder{color:rgba(148,163,184,0.5);}
+    .form-group select option{background:var(--blue-800);color:var(--white);}
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus{
+      border-color:var(--blue-400);background:rgba(37,99,235,0.08);
+    }
+    .form-group textarea{resize:vertical;min-height:110px;}
+
+    /* BUDGET CHIPS */
+    .chip-group{display:flex;flex-wrap:wrap;gap:0.5rem;}
+    .chip{
+      background:var(--glass);border:1px solid var(--glass-border);
+      color:var(--text-muted);padding:0.4rem 0.9rem;border-radius:99px;
+      font-size:0.82rem;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;
+      user-select:none;
+    }
+    .chip.active{background:rgba(37,99,235,0.25);border-color:var(--blue-400);color:var(--blue-300);}
+
+    /* FILE UPLOAD */
+    .file-drop{
+      border:1.5px dashed var(--glass-border);border-radius:12px;
+      padding:1.5rem;text-align:center;cursor:pointer;
+      transition:border-color 0.2s,background 0.2s;
+      background:rgba(255,255,255,0.03);
+    }
+    .file-drop:hover{border-color:var(--blue-400);background:rgba(37,99,235,0.05);}
+    .file-drop input{display:none;}
+    .file-drop-label{color:var(--text-muted);font-size:0.85rem;}
+    .file-drop-label span{color:var(--blue-300);cursor:pointer;}
+    #file-name{margin-top:0.4rem;font-size:0.8rem;color:var(--accent);}
+
+    /* SUBMIT */
+    .submit-btn{
+      width:100%;padding:1rem;border-radius:12px;
+      background:linear-gradient(135deg,var(--blue-500),var(--accent2));
+      color:var(--white);font-weight:700;font-size:1rem;
+      border:none;cursor:pointer;font-family:'Syne',sans-serif;
+      transition:all 0.25s;margin-top:0.5rem;
+      display:flex;align-items:center;justify-content:center;gap:0.5rem;
+    }
+    .submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,0.35);}
+    .submit-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+
+    /* TOAST */
+    .toast{
+      position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);
+      background:var(--blue-800);border:1px solid var(--glass-border);
+      color:var(--white);padding:1rem 1.5rem;border-radius:12px;
+      font-size:0.9rem;z-index:999;transition:transform 0.35s ease;
+      max-width:90vw;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.4);
+    }
+    .toast.show{transform:translateX(-50%) translateY(0);}
+    .toast.success{border-color:var(--success);}
+    .toast.error{border-color:var(--error);}
+
+    /* PROGRESS BAR */
+    .progress-bar{
+      height:3px;background:rgba(255,255,255,0.06);
+      border-radius:2px;margin-bottom:2rem;overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;
+      background:linear-gradient(90deg,var(--blue-500),var(--accent));
+      border-radius:2px;transition:width 0.4s ease;
+    }
+
+    @media(max-width:600px){
+      .form-row{grid-template-columns:1fr;}
+      .form-card{padding:1.25rem;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="index.html" class="back-btn">← Back</a>
+  <span class="topbar-title">TechVenture</span>
+  <div id="nav-user"></div>
+</div>
+
+<!-- FORM PAGE -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-badge">📋 Project Requirement Form</div>
+    <h1>Tell Us About<br/><em>Your Project</em></h1>
+    <p>Fill in the details below. Our team will review and reach out within 24 hours with a free quote.</p>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <div class="form-card">
+    <form id="reqForm">
+
+      <!-- Personal -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="f_name" placeholder="Your name" required />
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="f_email" placeholder="you@email.com" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone / WhatsApp *</label>
+          <input type="tel" id="f_phone" placeholder="+91 XXXXX XXXXX" required />
+        </div>
+        <div class="form-group">
+          <label>College / Organisation</label>
+          <input type="text" id="f_college" placeholder="e.g. MSEC Chennai" />
+        </div>
+      </div>
+
+      <!-- Project -->
+      <div class="form-group">
+        <label>Project Type *</label>
+        <select id="f_type" required>
+          <option value="">Select type</option>
+          <option>Academic / College Project</option>
+          <option>Freelance Client Website</option>
+          <option>Startup / Business Website</option>
+          <option>E-Commerce Store</option>
+          <option>Portfolio Website</option>
+          <option>Web Application / Dashboard</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Tech Stack Preference</label>
+        <select id="f_stack">
+          <option value="">No preference / Suggest me</option>
+          <option>HTML + CSS + JS</option>
+          <option>React.js</option>
+          <option>Node.js + Express</option>
+          <option>PHP + MySQL</option>
+          <option>Firebase (Full)</option>
+          <option>Next.js</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Expected Deadline *</label>
+          <input type="date" id="f_deadline" required />
+        </div>
+        <div class="form-group">
+          <label>Reference Website (if any)</label>
+          <input type="url" id="f_ref" placeholder="https://example.com" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Estimated Budget</label>
+        <div class="chip-group" id="budgetChips">
+          <div class="chip" data-val="Under ₹2,000">Under ₹2K</div>
+          <div class="chip" data-val="₹2,000–₹5,000">₹2K–₹5K</div>
+          <div class="chip" data-val="₹5,000–₹10,000">₹5K–₹10K</div>
+          <div class="chip" data-val="₹10,000+">₹10K+</div>
+          <div class="chip" data-val="Let us quote">Let you quote</div>
+        </div>
+        <input type="hidden" id="f_budget" />
+      </div>
+
+      <div class="form-group">
+        <label>Project Description *</label>
+        <textarea id="f_desc" rows="5" placeholder="Describe what you need: features, pages, integrations, specific requirements..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Attach File / Design Reference (optional)</label>
+        <div class="file-drop" onclick="document.getElementById('f_file').click()">
+          <input type="file" id="f_file" accept=".pdf,.jpg,.jpeg,.png,.docx,.zip" />
+          <div class="file-drop-label">📎 Drop file here or <span>browse</span></div>
+          <div id="file-name"></div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span id="btnText">🚀 Submit Requirement</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase + EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey:"AIzaSyDf5xj1eZ6RDMoy81LVSauHHgOTfC3WeYA",
+    authDomain:"techventure-e1c32.firebaseapp.com",
+    projectId:"techventure-e1c32",
+    storageBucket:"techventure-e1c32.firebasestorage.app",
+    messagingSenderId:"2664248933",
+    appId:"1:2664248933:web:5e56b92ae41e5ad28ff88c"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Pre-fill from Google sign-in
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      document.getElementById('nav-user').innerHTML =
+        `<img src="${user.photoURL||''}" alt="" /><span>${user.displayName||user.email}</span>`;
+      if (!document.getElementById('f_name').value) document.getElementById('f_name').value = user.displayName || '';
+      if (!document.getElementById('f_email').value) document.getElementById('f_email').value = user.email || '';
+    }
+  });
+
+  // Check localStorage fallback
+  const saved = JSON.parse(localStorage.getItem('tv_user')||'null');
+  if (saved) {
+    if (!document.getElementById('f_name').value) document.getElementById('f_name').value = saved.name||'';
+    if (!document.getElementById('f_email').value) document.getElementById('f_email').value = saved.email||'';
+  }
+
+  // Budget chips
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      document.getElementById('f_budget').value = chip.dataset.val;
+    });
+  });
+
+  // File name display
+  document.getElementById('f_file').addEventListener('change', e => {
+    document.getElementById('file-name').textContent = e.target.files[0]?.name || '';
+  });
+
+  // Progress
+  const fields = ['f_name','f_email','f_phone','f_type','f_deadline','f_desc'];
+  function updateProgress() {
+    const filled = fields.filter(id=>document.getElementById(id)?.value.trim()).length;
+    document.getElementById('progressFill').style.width = (filled/fields.length*100)+'%';
+  }
+  fields.forEach(id=>document.getElementById(id)?.addEventListener('input',updateProgress));
+  document.getElementById('f_type')?.addEventListener('change',updateProgress);
+
+  // Toast helper
+  function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = `toast ${type} show`;
+    setTimeout(()=>{ t.classList.remove('show'); }, 4000);
+  }
+
+  // FORM SUBMIT
+  window.emailjs.init("YOUR_EMAILJS_PUBLIC_KEY"); // ← Replace with your EmailJS public key
+
+  document.getElementById('reqForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    btn.disabled = true; btnText.textContent = '⏳ Submitting...';
+
+    const data = {
+      name:     document.getElementById('f_name').value.trim(),
+      email:    document.getElementById('f_email').value.trim(),
+      phone:    document.getElementById('f_phone').value.trim(),
+      college:  document.getElementById('f_college').value.trim(),
+      type:     document.getElementById('f_type').value,
+      stack:    document.getElementById('f_stack').value,
+      deadline: document.getElementById('f_deadline').value,
+      ref:      document.getElementById('f_ref').value.trim(),
+      budget:   document.getElementById('f_budget').value || 'Not specified',
+      desc:     document.getElementById('f_desc').value.trim(),
+      submittedAt: new Date().toISOString(),
+      status: 'new'
+    };
+
+    try {
+      // 1. Save to Firestore
+      await addDoc(collection(db,'requirements'), {
+        ...data, createdAt: serverTimestamp()
+      });
+
+      // 2. Send email via EmailJS
+      // Replace service_id, template_id with your EmailJS values
+      await window.emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+        to_email: 'YOUR_EMAIL@gmail.com',  // ← Your email
+        from_name: data.name,
+        from_email: data.email,
+        phone: data.phone,
+        college: data.college,
+        project_type: data.type,
+        stack: data.stack,
+        deadline: data.deadline,
+        budget: data.budget,
+        description: data.desc,
+        ref_link: data.ref || 'None'
+      });
+
+      showToast('✅ Requirement submitted! We\'ll contact you within 24 hours.', 'success');
+      document.getElementById('reqForm').reset();
+      document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      document.getElementById('file-name').textContent = '';
+      document.getElementById('progressFill').style.width = '0%';
+
+    } catch(err) {
+      console.error(err);
+      showToast('❌ Something went wrong. Please try WhatsApp or email us directly.', 'error');
+    } finally {
+      btn.disabled = false; btnText.textContent = '🚀 Submit Requirement';
+    }
+  });
+</script>
+</body>
+</html>
